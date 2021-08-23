@@ -1,0 +1,39 @@
+version: '3'
+services:
+
+  video-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8081:8080
+    environment:
+      #DATASOURCE
+      VIDEOAPI_DATABASE_URL: ${VIDEOAPI_DATABASE_URL}
+      VIDEOAPI_DATABASE_USERNAME: ${VIDEOAPI_DATABASE_USERNAME}
+      VIDEOAPI_DATABASE_PASSWORD: ${VIDEOAPI_DATABASE_PASSWORD}
+      VIDEOAPI_DRIVER_DATABASE: ${VIDEOAPI_DRIVER_DATABASE}
+      VIDEOAPI_INITIALIZATION_MODE: ${VIDEOAPI_INITIALIZATION_MODE}
+      VIDEOAPI_JPA_DATABASE_PLATFORM: ${VIDEOAPI_JPA_DATABASE_PLATFORM}
+      VIDEOAPI_HIBERNATE_DDL_AUTO: ${VIDEOAPI_HIBERNATE_DDL_AUTO}
+      VIDEOAPI_NAMING_STRATEGY: ${VIDEOAPI_NAMING_STRATEGY}
+      VIDEOAPI_URI: ${VIDEOAPI_URI}
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0.23
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+volumes:
+  db-data:

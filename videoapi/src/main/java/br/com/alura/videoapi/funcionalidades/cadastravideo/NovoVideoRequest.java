@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class NovoVideoRequest {
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = 80)
     private String titulo;
 
     @NotBlank

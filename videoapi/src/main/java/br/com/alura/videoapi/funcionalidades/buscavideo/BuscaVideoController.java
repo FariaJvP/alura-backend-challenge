@@ -4,6 +4,7 @@ import br.com.alura.videoapi.entidades.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,12 @@ public class BuscaVideoController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Video> buscaVideoPorId(@PathVariable UUID id){
+    public ResponseEntity<?> buscaVideoPorId(@PathVariable UUID id){
         Optional<Video> opt  = videoRepository.findById(id);
-        return opt.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        if (opt.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("video nao encontrado");
+        }
+        return ResponseEntity.ok().body(opt.get());
     }
 
 }
